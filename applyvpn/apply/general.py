@@ -226,7 +226,7 @@ def CreateVpn(EmailName,AliasName,password):
     vpnpassword = "password " + password
 
     cmd = ['sys', user_manage, 'parent-group /xxxxx/xxxx',vpnpassword, 'quit', 'quit']
-    #cmd = ['sys', 'user-manage user han.su', 'alias 苏晗', 'parent-group /default/vpn_platform','password 7ZGCPJtE', 'quit', 'quit']
+    #cmd = ['sys', 'user-manage user han.su', 'alias 苏晗', 'parent-group /xxxx/xxxx','password xxxxxx', 'quit', 'quit']
 
     try:
         ssh = paramiko.SSHClient()
