@@ -1,0 +1,8 @@
+Flask==1.0.2
+flask_bootstrap
+wtforms
+python==3.6.5
+flask_wtf
+requests
+redis
+paramiko

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="../../static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../static/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../../static/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="../../static/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../../static/dist/css/skins/_all-skins.min.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini" style="background: #e5e5e5">
+
+<div class="col-md-4" style="margin-top: 1%;padding: 2px 5px 2px 5px">
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <i class="fa fa-expeditedssl"></i>
+            <h3 class="box-title">VPN申请</h3>
+        </div>
+        <div class="box-body">
+            <div class="form-group" id="name_input">
+                <label for="name">姓名</label>
+                <input type="text" id="name" class="form-control" placeholder="张三" required autofocus>
+            </div>
+            <div class="form-group" id="email_input">
+                <label for="email">邮箱</label>
+                <input type="text" id="email" class="form-control"  placeholder="123@guanaitong.com" required>
+            </div>
+            <div class="form-group" id="empid_input">
+                <label for="empid">工号</label>
+                <input type="text" id="empid" class="form-control" placeholder="带字母工号" required>
+            </div>
+            <div class="form-group" id="reason_input">
+                <label for="reason">申请原因</label>
+                <textarea id="reason" class="form-control" rows="5" placeholder="说明理由" required></textarea>
+            </div>
+            <div class="form-group" id="phonenum_input">
+                <label for="phonenum">手机</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="phonenum" placeholder="13xxxxxxxxx" required>
+                    <span class="input-group-btn" >
+                        <button type="button" class="btn btn-info" id="getmsgcode">获取验证码</button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group" id="msgcode_input">
+                <label for="msgcode">验证码</label>
+                <input type="text" class="form-control" id="msgcode" placeholder="752261" required>
+            </div>
+
+            <div class="box-footer">
+                <button id="submit" class="btn  btn-primary">提交申请</button>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+<script src="../../static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../../static/bower_components/fastclick/lib/fastclick.js"></script>
+<script src="../../static/dist/js/adminlte.min.js"></script>
+<script src="../../static/dist/js/demo.js"></script>
+
+<script>
+
+// 这里定义的函数，下面清除状态的时候用的
+function clearstatus(id){
+    var tagarr=["has-warning","has-success","has-error"];
+    for (var i=0;i<tagarr.length;i++){
+        if ($(id).hasClass(tagarr[i])){
+            $(id).removeClass(tagarr[i])
+        }
+    }
+    $(id).find("i").remove();
+    $(id).children("span").remove();
+}
+
+//这几个函数应该是，显示ok err warn等级别的弹窗
+function showok(id, msg){
+    clearstatus(id);
+    $(id).addClass("has-success");
+    $(id).children("label").prepend("<i class=\"fa fa-check\"></i>");
+    $(id).append("<span class=\"help-block\">"+ msg +"</span>");
+}
+
+function showwarn(id, msg){
+    clearstatus(id);
+    $(id).addClass("has-warning");
+    $(id).children("label").prepend("<i class=\"fa fa-bell-o\"></i>");
+    $(id).append("<span class=\"help-block\">"+ msg +"</span>");
+}
+
+function showerror(id, msg){
+    clearstatus(id);
+    $(id).addClass("has-error");
+    $(id).children("label").prepend("<i class=\"fa fa-times-circle-o\"></i>");
+    $(id).append("<span class=\"help-block\">"+ msg +"</span>");
+}
+
+
+$(document).ready(function(){
+    // Send msg code.
+
+    $("#getmsgcode").click(function() {
+
+        var pn = $("#phonenum").val();
+        var empid = $("#empid").val();
+
+        // Verify phone number
+        if (isNaN(pn)){
+            console.log("手机号必须为数字");
+            showwarn("#phonenum_input", "手机号必须为数字");
+        }else if (pn.length != 11){
+            console.log("手机号是11位数字");
+            showwarn("#phonenum_input", "手机号是11位数字");
+        }else{
+            // Verify msgcode is send or not.
+            $.ajax({
+                url: "http://127.0.0.1:5000/api/sendmsg?pn="+pn,
+                type: "GET",
+                success: function (data) {
+                    if (data["status"] == "success") {
+                        $.ajax({
+                            url: "http://127.0.0.1:5000/api/sendmsg",
+                            type: "POST",
+                            data: JSON.stringify({
+                                "phonenum": pn
+                            }),
+                            contentType: "application/json",
+                            success: function (result) {
+                                console.log(result["msg"]);
+                                showok("#phonenum_input", result["msg"]);
+                            },
+                            error: function (xhr, resp, text) {
+                                console.log("无法与后台接口通信。");
+                                showerror("#phonenum_input", "无法与后台接口通信。");
+                            }
+                        });
+                    } else if (data["status"] == "fail") {
+                        console.log(data["msg"]);
+                        showerror("#phonenum_input", data["msg"]);
+                    }
+                },
+                error: function (xhr, resp, text) {
+                    console.log("无法与后台接口通信。");
+                    showerror("#phonenum_input", "无法与后台接口通信。");
+                }
+            })
+
+
+            // Unlock send msg for 1 min.
+            // setTimeout("unlocksendmsg", sendmsg_interval*1000);
+        }
+
+    });
+
+    // Clear error state when input.
+    $("#phonenum").keypress(function () {
+        clearstatus("#phonenum_input")
+    });
+
+
+// 最下面这个应该是提交数据到后台
+
+    $("#submit").click(function() {
+        clearstatus("#phonenum_input");
+        $.ajax({
+            url: 'http://127.0.0.1:5000/api/apply',
+            type: "POST",
+            data: JSON.stringify(
+                {
+                    name: $("#name").val(),
+                    email: $("#email").val(),
+                    empid: $("#empid").val(),
+                    reason: $("#reason").val(),
+                    phonenum: $("#phonenum").val(),
+                    msgcode: $("#msgcode").val()
+                }
+            ),
+            contentType: "application/json",
+            success: function (result) {
+                if (result["status"]=="msgcode_mismatch"){
+                    console.log("验证码错误！");
+                    showerror("#msgcode", "验证码错误！")
+                }else if (result["status"]=="tail"){
+                    showwarn("")
+                }
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        });
+    });
+
+
+
+ });
+
+
+
+
+</script>
+
+</body>
+</html>

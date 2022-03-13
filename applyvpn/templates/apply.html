@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="../static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../static/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="../static/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../static/dist/css/skins/_all-skins.min.css">
+  <style>
+      .hide{
+          display: none;
+      }
+      .modal{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 200px;
+        height: 100px;
+        margin-left: -250px;
+        margin-top: -250px;
+        background-color: #eeeeee;
+        z-index: 10; /* 谁大谁显示在最上面*/
+        }
+
+  </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini" style="background: #e5e5e5">
+
+<div class="col-md-4" style="margin-top: 1%;margin-left: 30%;margin-right: 30%;padding: 2px 5px 2px 5px">
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <i class="fa fa-expeditedssl"></i>
+            <h3 class="box-title">VPN申请</h3>
+        </div>
+        <div class="box-body">
+            <form id="ApplyInfoForm" name="ApplyInfoForm" role="form" method="post" action="/apply/verifyinfo">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="name">{{ form.name.label }}</label>
+                        {{ form.name }}
+                    </div>
+
+                    <!--<div class="form-group">-->
+                        <!--<label for="email">邮箱</label>-->
+                        <!--<input type="text" id="email" class="form-control"  placeholder="123@guanaitong.com" >-->
+                    <!--</div>-->
+
+                    <div class="form-group">
+                        <label for="worknumber">{{ form.worknumber.label }}</label>
+                        {{ form.worknumber }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reason">{{ form.reason.label }}</label>
+                        {{ form.reason }}
+                    </div>
+
+                    <div id="phone" class="form-group">
+                        <label for="phone">{{ form.phone.label }}</label>
+                        {{ form.phone }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="captcha">{{ form.captcha.label }}</label>
+                        <div class="input-group">
+                            {{ form.captcha }}
+                            <span class="input-group-btn" >
+                                <!--<button id="submit_captcha" onclick="settime(this);" type="button" class="btn btn-info" value="获取验证码"></button>-->
+                                <input id="submit_captcha" onclick="settime(this);" type="button" class="btn btn-info" value="获取验证码">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box-footer">
+                    {{ form.csrf_token }}
+                    <!--<input type="button" id="submit_all" value="ajax方法提交测试">-->
+                    <input type="submit" value="提交">
+                </div>
+                <div class="form-group modal">
+                    提交成功
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!--<script src="../static/bower_components/jquery/dist/jquery.min.js"></script>-->
+<!--<script src="../static/jquery-1.12.4.js"></script>-->
+<!--<script src="../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
+<!--<script src="../static/bower_components/fastclick/lib/fastclick.js"></script>-->
+<!--<script src="../static/dist/js/adminlte.min.js"></script>-->
+<!--<script src="../static/dist/js/demo.js"></script>-->
+
+<script src="../static/jquery-1.12.4.js"></script>
+<script>
+
+
+
+    // 点击按钮获取验证码
+    $('#submit_captcha').click(function () {
+        data = $("form").serializeArray();
+        PhoneValue = data[3].value;
+
+        if(!(/^1[34578]\d{9}$/.test(PhoneValue))){
+            alert("手机号码有误，请重填");
+            countdown = 0;
+            return false;
+        }
+
+        console.log("33333");
+        $.ajax({
+            url: '/GetCaptcha',
+            type: 'GET',
+            data: {'phone':PhoneValue},
+            success: function (data) {
+                // 这个里面的data是返回的数据，不是提交过去的data
+                //如果非空就显示返回的值
+                if(data){
+                    console.log("44444");
+                    alert(data)
+                }
+                else {
+                    alert("返回信息为空，获取验证码失败，请联系管理员")
+                }
+            },
+            error: function(errorThrown){
+            alert(errorThrown);
+            alert("There is an error with AJAX!请联系管理员");
+            }
+        })
+    });
+
+    var countdown=60;
+    function settime(val){
+        if (countdown == 0) {
+            val.removeAttribute("disabled");
+            val.value="获取验证码";
+            countdown = 60;
+            console.log(countdown);
+            return false;
+        } else {
+            val.setAttribute("disabled", true);
+            val.value="重新发送(" + countdown + ")";
+            countdown--;
+            console.log("2222");
+        }
+        setTimeout(function() {
+            settime(val);
+        },1000);
+    };
+
+
+
+
+    // ajax拿到html数据，不能像form表单提交后一样展示成页面和跳转。可以做弹窗。
+    //所以下面这段的方法不用了，还是使用form表单的方法。这段配置留着，以后参数使用。
+    //#前段ajax发送POST请求，后端获取。//Inputdata_ajax = request.get_json()
+
+    // $('#submit_all').click(function () {
+    //     data_all = $("form").serializeArray();
+    //     console.log(data_all);
+    //
+    //     name_val = data_all[0].value;
+    //     worknumber_val = data_all[1].value;
+    //     reason_val = data_all[2].value;
+    //     phone_val = data_all[3].value;
+    //     captcha_val = data_all[4].value;
+    //
+    //     $.ajax({
+    //         url: '/apply/verifyinfo',
+    //         type: 'POST',
+    //         contentType:'application/json; charset=UTF-8',  //指定传递给服务器的是Json格式数据
+    //         data: JSON.stringify(  //转变传递的参数为字符串格式
+    //             {
+    //             'name':name_val,
+    //             'worknumber':worknumber_val,
+    //             'reason':reason_val,
+    //             'phone':phone_val,
+    //             'captcha':captcha_val
+    //             }
+    //         ),
+    //         success: function (data) {
+    //             // 这个里面的data是返回的数据，不是提交过去的data
+    //             console.log(data);
+    //         }
+    //     })
+    //
+    // });
+    //
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block title %}{% endblock %}</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="../static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../static/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="../static/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../static/dist/css/skins/_all-skins.min.css">
+{#  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">#}
+</head>
+<body class="hold-transition skin-blue sidebar-mini" style="background: #e5e5e5">
+{% block body %}{% endblock %}
+
+
+<script src="../static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../static/bower_components/fastclick/lib/fastclick.js"></script>
+<script src="../static/dist/js/adminlte.min.js"></script>
+<script src="../static/dist/js/demo.js"></script>
+<script src="https://cdn.bootcss.com/jquery.serializeJSON/2.9.0/jquery.serializejson.min.js"></script>
+
+{% block script %}{% endblock %}
+
+</body>
+</html>

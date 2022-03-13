@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="../static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../static/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="../static/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../static/dist/css/skins/_all-skins.min.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini" style="background: #e5e5e5">
+
+<div class="col-md-4" style="margin-top: 1%;margin-left: 30%;margin-right: 30%;padding: 2px 5px 2px 5px">
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <i class="fa fa-expeditedssl"></i>
+            <h2 class="box-title">结果显示</h2>
+        </div>
+
+        <div class="box-body">
+                <div class="box-body">
+                    <br>
+                    <h4>{{ apply_result }} </h4>
+                    <br>
+                    <br>
+                </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        function closewin(){
+            window.location.href="about:blank";
+            window.close();
+            }
+        function clock(){
+            i=i-1;
+            document.title=i+"秒后窗口关闭!";
+            if(i>0)
+                setTimeout("clock();",1000);
+            else
+                closewin();
+            }
+        var i=18;
+        clock();
+    </script>
+
+</body>
+</html>

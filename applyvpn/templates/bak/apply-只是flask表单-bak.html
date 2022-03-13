@@ -1,0 +1,20 @@
+<!-- 引入了wtf.html，找个里面有一些基本的页面-->
+{% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+   <style type="text/css">
+   #all { height: 50px; font-size: large }
+  </style>
+{% endblock %}
+{% block page_content %}
+    <div >
+        <form action="/apply/verifyinfo" method="POST">
+            {{ form.hidden_tag() }}
+            {{  wtf.form_field(form.name) }}
+            {{  wtf.form_field(form.worknumber) }}
+            {{  wtf.form_field(form.phone) }}
+            {{  wtf.form_field(form.reason) }}
+            {{ form.csrf_token }}
+            {{ wtf.form_field(form.submit) }}
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+<!-- 引入了wtf.html，找个里面有一些基本的页面-->
+{% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+<style type="text/css" xmlns="http://www.w3.org/1999/html">
+   #all { height: 50px; font-size: large }
+  </style>
+{% endblock %}
+{% block page_content %}
+    <div >
+        <form action="/apply/audit_result" method="POST">
+            姓名:{{ name }}
+            <br />
+            工号：
+            <input type="text" name="worknumber" value="{{ worknumber }}" >
+            <br />
+            申请理由：{{ reason }}
+            <br />
+            {{ form.submit_pass }}
+            {{ wtf.form_field(form.submit_refuse) }}
+            {{ wtf.form_field(form.reason) }}
+        </form>
+    </div>
+{% endblock %}

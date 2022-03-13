@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="../static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../static/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="../static/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../static/dist/css/skins/_all-skins.min.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini" style="background: #e5e5e5">
+
+<div class="col-md-4" style="margin-top: 1%;margin-left: 30%;margin-right: 30%;padding: 2px 5px 2px 5px">
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <i class="fa fa-expeditedssl"></i>
+            <h3 class="box-title">VPN申请审核</h3>
+        </div>
+        <div class="box-body">
+            <form id="ApplyInfoForm" name="ApplyInfoForm" role="form" method="post" action="/apply/audit_result">
+                <div class="box-body">
+                    姓名： {{ name }}
+                    <input type="hidden" name="name" value="{{ name }}" >
+                    <br />
+                    工号：{{ worknumber }}
+                    <input type="hidden" name="worknumber" value="{{ worknumber }}" >
+                    <br />
+                    手机号：{{ mobile }}
+                    <input type="hidden" name="mobile" value="{{ mobile }}" >
+                    <br />
+                    邮箱：{{ email }}
+                    <input type="hidden" name="email" value="{{ email }}" >
+                    <br />
+                    申请理由：{{ userreason }}
+                    <input type="hidden" name="userreason" value="{{ userreason }}" >
+                    <br />
+                    <input type="hidden" name="people_info_md5" value="{{ people_info_md5 }}" >
+                    <br />
+                </div>
+
+                <div class="box-footer">
+                    <div class="form-group">
+                        审核结果说明:
+                        {{ form.reason }}
+                    </div>
+                    {{ form.submit_pass }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{ form.submit_refuse }}
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="../static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../static/bower_components/fastclick/lib/fastclick.js"></script>
+<script src="../static/dist/js/adminlte.min.js"></script>
+<script src="../static/dist/js/demo.js"></script>
+
+<script>
+
+</script>
+
+</body>
+</html>

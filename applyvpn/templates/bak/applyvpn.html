@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="../../static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../static/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../../static/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="../../static/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../../static/dist/css/skins/_all-skins.min.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini" style="background: #e5e5e5">
+
+<div class="col-md-4" style="margin-top: 1%;padding: 2px 5px 2px 5px">
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <i class="fa fa-expeditedssl"></i>
+            <h3 class="box-title">VPN申请</h3>
+        </div>
+        <div class="box-body">
+            <form id="ApplyInfoForm" name="ApplyInfoForm" role="form" method="post" action="/apply/verifyinfo">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input type="text" id="name" class="form-control" placeholder="张三" >
+                    </div>
+
+                    <!--<div class="form-group">-->
+                        <!--<label for="email">邮箱</label>-->
+                        <!--<input type="text" id="email" class="form-control"  placeholder="123@guanaitong.com" >-->
+                    <!--</div>-->
+
+                    <div class="form-group">
+                        <label for="worknumber">工号</label>
+                        <input type="text" id="worknumber" class="form-control" placeholder="带字母工号" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reason">申请原因</label>
+                        <textarea id="reason" class="form-control" rows="5" placeholder="说明理由" ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">手机</label>
+                        <input type="text" class="form-control" id="phone" placeholder="1xxxxxxxxxx" >
+                    </div>
+
+                    <!--<div class="form-group">-->
+                        <!--<label for="captcha">验证码</label>-->
+                        <!--<div class="input-group">-->
+                            <!--<input type="text" class="form-control" id="captcha" placeholder="752261" >-->
+                            <!--<span class="input-group-btn" >-->
+                                <!--<button type="button" class="btn btn-info">获取验证码</button>-->
+                            <!--</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                </div>
+            </form>
+            <div class="box-footer">
+                <button id="submit" class="btn  btn-primary">提交申请</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script src="../../static/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../../static/bower_components/fastclick/lib/fastclick.js"></script>
+<script src="../../static/dist/js/adminlte.min.js"></script>
+<script src="../../static/dist/js/demo.js"></script>
+
+<script>
+
+
+// 点击申请，提交信息
+$(document).ready(function(){
+    $("#submit").on('click', function() {
+        $.ajax({
+            url: 'http://127.0.0.1:8080/apply/verifyinfo',
+            type: "POST",
+            data: JSON.stringify(
+                {
+                    name: $("#name").val(),
+                    // email: $("#email").val(),
+                    worknumber: $("#worknumber").val(),
+                    reason: $("#reason").val(),
+                    phone: $("#phone").val()
+                    //msgcode: $("#msgcode").val()
+                }
+            ),
+            contentType: "application/json",
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        });
+    });
+ });
+
+
+
+
+</script>
+
+</body>
+</html>
